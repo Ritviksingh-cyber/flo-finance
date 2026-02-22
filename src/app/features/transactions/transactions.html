@@ -1,0 +1,96 @@
+<!-- TOP BAR -->
+<div class="topbar">
+    <div>
+      <div class="page-title">Transactions</div>
+      <div class="page-subtitle">All your income and expenses</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-primary" (click)="exportCSV()">↓ Export CSV</button>
+    </div>
+  </div>
+  
+  <!-- SUMMARY CARDS -->
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr)">
+    <div class="card income">
+      <div class="card-label">Filtered Income</div>
+      <div class="card-amount">₹{{ totalIncome | number }}</div>
+    </div>
+    <div class="card expense">
+      <div class="card-label">Filtered Expenses</div>
+      <div class="card-amount">₹{{ totalExpense | number }}</div>
+    </div>
+    <div class="card balance">
+      <div class="card-label">Filtered Balance</div>
+      <div class="card-amount">₹{{ totalIncome - totalExpense | number }}</div>
+    </div>
+  </div>
+  
+  <!-- FILTERS -->
+  <div class="panel" style="margin-bottom: 24px;">
+    <div class="filter-row">
+  
+      <div class="filter-group">
+        <label class="form-label">Search</label>
+        <input
+          class="form-input"
+          type="text"
+          placeholder="Search transactions..."
+          [(ngModel)]="searchText"
+          (input)="applyFilters()"
+        />
+      </div>
+  
+      <div class="filter-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" [(ngModel)]="selectedCategory" (change)="applyFilters()">
+          <option value="">All Categories</option>
+          <option *ngFor="let cat of categories">{{ cat }}</option>
+        </select>
+      </div>
+  
+      <div class="filter-group">
+        <label class="form-label">Type</label>
+        <select class="form-select" [(ngModel)]="selectedType" (change)="applyFilters()">
+          <option value="">All Types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+  
+      <div class="filter-group" style="justify-content: flex-end; align-items: flex-end;">
+        <button class="btn btn-primary" (click)="searchText=''; selectedCategory=''; selectedType=''; applyFilters()">
+          Clear Filters
+        </button>
+      </div>
+  
+    </div>
+  </div>
+  
+  <!-- TRANSACTIONS TABLE -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">{{ filtered.length }} Transactions</div>
+    </div>
+  
+    <!-- Empty State -->
+    <div *ngIf="filtered.length === 0" class="empty-state">
+      No transactions found
+    </div>
+  
+    <!-- Transaction List -->
+    <div class="tx-list">
+      <div class="tx-item" *ngFor="let tx of filtered">
+        <div class="tx-icon">{{ tx.icon }}</div>
+        <div class="tx-info">
+          <div class="tx-name">{{ tx.name }}</div>
+          <div class="tx-meta">{{ tx.date }} · {{ tx.category }}</div>
+        </div>
+        <div class="tx-amount"
+          [class.pos]="tx.type === 'income'"
+          [class.neg]="tx.type === 'expense'">
+          {{ tx.type === 'income' ? '+' : '-' }}₹{{ tx.amount | number }}
+        </div>
+        <button class="delete-btn" (click)="deleteTransaction(tx.id)">✕</button>
+      </div>
+    </div>
+  </div>

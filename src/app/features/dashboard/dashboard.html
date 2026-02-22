@@ -1,0 +1,196 @@
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="page-title">Dashboard</div>
+    <div class="page-subtitle">{{ currentMonth }}</div>
+  </div>
+  <div class="topbar-right">
+    <div class="month-selector">📅 {{ currentMonth }} ▾</div>
+    <button class="btn btn-primary" (click)="openModal()">+ Add Entry</button>
+  </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+
+  <!-- INCOME CARD -->
+  <div class="card income">
+    <div class="card-label">Total Income</div>
+    <div *ngIf="!editingIncome">
+      <div class="card-amount">₹{{ totalIncome | number }}</div>
+      <div class="card-change">
+        <span class="up">↑ 8.2%</span> vs last month
+        <button class="edit-income-btn" (click)="startEditIncome()">✎ Edit</button>
+      </div>
+    </div>
+    <div *ngIf="editingIncome">
+      <input
+        class="form-input"
+        type="number"
+        [(ngModel)]="manualIncome"
+        style="margin: 8px 0;"
+      />
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button class="btn btn-primary"
+          style="padding: 6px 12px; font-size: 0.75rem;"
+          (click)="saveIncome()">
+          Save
+        </button>
+        <button class="btn-cancel"
+          style="padding: 6px 12px; font-size: 0.75rem;"
+          (click)="cancelEditIncome()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPENSE CARD -->
+  <div class="card expense">
+    <div class="card-label">Total Expenses</div>
+    <div class="card-amount">₹{{ totalExpense | number }}</div>
+    <div class="card-change"><span class="down">↑ 3.1%</span> vs last month</div>
+  </div>
+
+  <!-- BALANCE CARD -->
+  <div class="card balance">
+    <div class="card-label">Net Balance</div>
+    <div class="card-amount">₹{{ balance | number }}</div>
+    <div class="card-change"><span class="up">↑ 15.4%</span> vs last month</div>
+  </div>
+
+  <!-- BIGGEST SPEND CARD -->
+  <div class="card top">
+    <div class="card-label">Biggest Spend</div>
+    <div class="card-amount">
+      {{ biggestSpend ? '₹' + (biggestSpend.amount | number) : '₹0' }}
+    </div>
+    <div class="card-change">
+      {{ biggestSpend ? biggestSpend.name + ' · ' + biggestSpend.date : 'No expenses yet' }}
+    </div>
+  </div>
+
+</div>
+
+<!-- ROW: TRANSACTIONS + BUDGETS -->
+<div class="grid-2">
+
+  <!-- RECENT TRANSACTIONS -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Recent Transactions</div>
+      <button class="panel-action">View all</button>
+    </div>
+    <div class="tx-list">
+      <div *ngIf="transactions.length === 0" class="empty-state">
+        No transactions yet
+      </div>
+      <div class="tx-item" *ngFor="let tx of transactions | slice:0:6">
+        <div class="tx-icon">{{ tx.icon }}</div>
+        <div class="tx-info">
+          <div class="tx-name">{{ tx.name }}</div>
+          <div class="tx-meta">{{ tx.date }} · {{ tx.category }}</div>
+        </div>
+        <div class="tx-amount"
+          [class.pos]="tx.type === 'income'"
+          [class.neg]="tx.type === 'expense'">
+          {{ tx.type === 'income' ? '+' : '-' }}₹{{ tx.amount | number }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUDGET TRACKER -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Budget Tracker</div>
+      <button class="panel-action">Edit</button>
+    </div>
+    <div class="budget-list">
+      <div *ngIf="budgets.length === 0" class="empty-state">
+        No budgets yet
+      </div>
+      <div class="budget-item" *ngFor="let b of budgetsWithSpent">
+        <div class="budget-header">
+          <span class="budget-name">{{ b.icon }} {{ b.name }}</span>
+          <span class="budget-vals">₹{{ b.spent | number }} / ₹{{ b.limit | number }}</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill"
+            [style.width.%]="(b.spent / b.limit) * 100"
+            [style.background]="b.color">
+          </div>
+        </div>
+      </div>
+
+      <!-- Savings Goal -->
+      <div class="budget-item">
+        <div class="budget-header">
+          <span class="budget-name">🎯 Savings Goal</span>
+          <span class="budget-vals green">₹{{ balance | number }} / ₹30,000</span>
+        </div>
+        <div class="progress-track" style="height:8px">
+          <div class="progress-fill"
+            [style.width.%]="(balance / 30000) * 100"
+            style="background: linear-gradient(90deg, #2d5a3d, #4a8a5d)">
+          </div>
+        </div>
+        <div class="savings-note">
+          {{ ((balance / 30000) * 100).toFixed(0) }}% of monthly goal reached
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ADD ENTRY MODAL -->
+<div class="modal-overlay" [class.open]="modalOpen" (click)="onOverlayClick($event)">
+  <div class="modal">
+    <div class="modal-title">Add Entry</div>
+
+    <div class="form-group">
+      <label class="form-label">Type</label>
+      <div class="type-toggle">
+        <button class="type-btn"
+          [class.active-income]="entryType === 'income'"
+          (click)="entryType = 'income'">↑ Income</button>
+        <button class="type-btn"
+          [class.active-expense]="entryType === 'expense'"
+          (click)="entryType = 'expense'">↓ Expense</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Amount (₹)</label>
+      <input class="form-input" type="number" [(ngModel)]="entryAmount" placeholder="0.00" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-select" [(ngModel)]="entryCategory">
+        <option value="">Select category</option>
+        <option>Salary</option>
+        <option>Freelance</option>
+        <option>Rent</option>
+        <option>Food</option>
+        <option>Travel</option>
+        <option>Shopping</option>
+        <option>Utilities</option>
+        <option>Entertainment</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Note (optional)</label>
+      <input class="form-input" type="text" [(ngModel)]="entryNote" placeholder="What was this for?" />
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-submit" (click)="saveEntry()">Save Entry</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+{
+  "transactions": [
+    {
+      "id": "d162",
+      "name": "Pg rent",
+      "amount": 14000,
+      "type": "expense",
+      "category": "Rent",
+      "date": "2026-02-20",
+      "icon": "💸",
+      "note": "Pg rent"
+    },
+    {
+      "id": "3965",
+      "name": "Manual Income Adjustment",
+      "amount": 25000,
+      "type": "income",
+      "category": "Salary",
+      "date": "2026-02-20",
+      "icon": "💰",
+      "note": "Manual adjustment"
+    },
+    {
+      "id": "eea9",
+      "name": "out with relyance",
+      "amount": 700,
+      "type": "expense",
+      "category": "Food",
+      "date": "2026-02-20",
+      "icon": "💸",
+      "note": "out with relyance"
+    }
+  ],
+  "budgets": [
+    {
+      "id": "612a",
+      "icon": "🏠",
+      "name": "Rent",
+      "spent": 0,
+      "limit": 13000,
+      "color": "#2d5a3d"
+    },
+    {
+      "id": "d54d",
+      "icon": "🍔",
+      "name": "Food ",
+      "spent": 0,
+      "limit": 4000,
+      "color": "#8b2e2e"
+    },
+    {
+      "id": "63ad",
+      "icon": "⚡",
+      "name": "Electricity",
+      "spent": 0,
+      "limit": 700,
+      "color": "#2a4a7f"
+    },
+    {
+      "id": "e2ae",
+      "icon": "🛍️",
+      "name": "Shopping",
+      "spent": 0,
+      "limit": 3000,
+      "color": "#7a4a1a"
+    },
+    {
+      "id": "620e",
+      "icon": "🎮",
+      "name": "Gym",
+      "spent": 0,
+      "limit": 2000,
+      "color": "#c47a1a"
+    },
+    {
+      "id": "4ab2",
+      "icon": "🚗",
+      "name": "Outing",
+      "spent": 0,
+      "limit": 2000,
+      "color": "#4a2a7a"
+    }
+  ]
+}
