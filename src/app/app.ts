@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './core/services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,16 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['./app.css']
 })
 export class App {
-  constructor(private auth: AuthService) {}
+  showSidebar = true;
+
+  constructor(private auth: AuthService, private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      const authRoutes = ['/login', '/register'];
+      this.showSidebar = !authRoutes.includes(event.url);
+    });
+  }
 
   async logout() {
     await this.auth.logout();

@@ -1,4 +1,5 @@
-<div class="wrapper">
+<!-- SIDEBAR LAYOUT -->
+<div class="wrapper" *ngIf="showSidebar">
   <aside class="sidebar">
     <div class="logo">flo.</div>
     <div class="logo-sub">Finance</div>
@@ -29,4 +30,9 @@
   <main class="main">
     <router-outlet></router-outlet>
   </main>
+</div>
+
+<!-- AUTH LAYOUT (no sidebar) -->
+<div *ngIf="!showSidebar">
+  <router-outlet></router-outlet>
 </div>
