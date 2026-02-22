@@ -29,6 +29,22 @@ A modern, minimal personal finance dashboard built with Angular and Supabase.
 | Deployment | Vercel |
 
 ---
+## Screenshots
+
+### Dashboard
+![Dashboard](src/assets/screenshots/dashboard.png)
+
+### Sidebar
+![Sidebar](src/assets/screenshots/sidebar.png)
+
+## Demo
+
+### Adding a Transaction
+![Add Transaction](src/assets/screenshots/transaction.gif)
+
+
+
+---------
 
 ## Getting Started
 
