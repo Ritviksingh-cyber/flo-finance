@@ -4,22 +4,26 @@ import { supabase } from './supabase';
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
 
-  async getUserId() {
+  async getUserId(): Promise<string | null> {
     const { data } = await supabase.auth.getUser();
-    return data.user?.id;
+    return data?.user?.id ?? null;
   }
 
   async getTransactions() {
+    const user_id = await this.getUserId();
+    if (!user_id) return [];
     const { data, error } = await supabase
       .from('transactions')
       .select('*')
+      .eq('user_id', user_id)
       .order('created_at', { ascending: false });
     if (error) throw error;
-    return data;
+    return data ?? [];
   }
 
   async addTransaction(tx: any) {
     const user_id = await this.getUserId();
+    if (!user_id) return;
     const { data, error } = await supabase
       .from('transactions')
       .insert([{ ...tx, user_id }]);
@@ -36,16 +40,20 @@ export class ExpenseService {
   }
 
   async getBudgets() {
+    const user_id = await this.getUserId();
+    if (!user_id) return [];
     const { data, error } = await supabase
       .from('budgets')
       .select('*')
+      .eq('user_id', user_id)
       .order('created_at', { ascending: true });
     if (error) throw error;
-    return data;
+    return data ?? [];
   }
 
   async addBudget(budget: any) {
     const user_id = await this.getUserId();
+    if (!user_id) return;
     const { data, error } = await supabase
       .from('budgets')
       .insert([{
