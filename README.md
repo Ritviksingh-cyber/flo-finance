@@ -34,9 +34,6 @@ A modern, minimal personal finance dashboard built with Angular and Supabase.
 ### Dashboard
 ![Dashboard](src/assets/screenshots/dashboard.png)
 
-### Sidebar
-![Sidebar](src/assets/screenshots/sidebar.png)
-
 ## Demo
 
 ### Adding a Transaction
