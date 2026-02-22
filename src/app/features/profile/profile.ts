@@ -29,13 +29,11 @@ export class Profile implements OnInit {
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnInit() {
-    this.expenseService.getTransactions().subscribe((data: any[]) => {
-      this.transactions = data;
-    });
-    this.expenseService.getBudgets().subscribe((data: any[]) => {
-      this.budgets = data;
-    });
+  async ngOnInit() {
+    const txData = await this.expenseService.getTransactions();
+    this.transactions = txData ?? [];
+    const budgetData = await this.expenseService.getBudgets();
+    this.budgets = budgetData ?? [];
   }
 
   get totalIncome(): number {

@@ -24,21 +24,19 @@ export class Budgets implements OnInit {
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnInit() {
-    this.loadBudgets();
-    this.loadTransactions();
+  async ngOnInit() {
+    await this.loadBudgets();
+    await this.loadTransactions();
   }
 
-  loadBudgets() {
-    this.expenseService.getBudgets().subscribe((data: any[]) => {
-      this.budgets = data;
-    });
+  async loadBudgets() {
+    const data = await this.expenseService.getBudgets();
+    this.budgets = (data ?? []).map((b: any) => ({ ...b, limit: b.budget_limit }));
   }
 
-  loadTransactions() {
-    this.expenseService.getTransactions().subscribe((data: any[]) => {
-      this.transactions = data;
-    });
+  async loadTransactions() {
+    const data = await this.expenseService.getTransactions();
+    this.transactions = data ?? [];
   }
 
   get budgetsWithSpent(): any[] {
@@ -66,20 +64,17 @@ export class Budgets implements OnInit {
     this.editLimit = budget.limit;
   }
 
-  saveEdit(budget: any) {
-    const updated = { ...budget, limit: this.editLimit };
-    this.expenseService.updateBudget(budget.id, updated).subscribe(() => {
-      this.editingId = null;
-      this.loadBudgets();
-    });
+  async saveEdit(budget: any) {
+    await this.expenseService.updateBudget(budget.id, { limit: this.editLimit });
+    this.editingId = null;
+    await this.loadBudgets();
   }
 
   cancelEdit() { this.editingId = null; }
 
-  deleteBudget(id: number) {
-    this.expenseService.deleteBudget(id).subscribe(() => {
-      this.loadBudgets();
-    });
+  async deleteBudget(id: number) {
+    await this.expenseService.deleteBudget(id);
+    await this.loadBudgets();
   }
 
   openModal() { this.modalOpen = true; }
@@ -95,11 +90,10 @@ export class Budgets implements OnInit {
     }
   }
 
-  saveBudget() {
+  async saveBudget() {
     if (!this.newBudget.name || !this.newBudget.limit) return;
-    this.expenseService.addBudget(this.newBudget).subscribe(() => {
-      this.loadBudgets();
-      this.closeModal();
-    });
+    await this.expenseService.addBudget(this.newBudget);
+    await this.loadBudgets();
+    this.closeModal();
   }
 }

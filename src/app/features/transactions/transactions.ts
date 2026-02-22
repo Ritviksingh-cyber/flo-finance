@@ -21,15 +21,14 @@ export class Transactions implements OnInit {
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnInit() {
-    this.loadTransactions();
+  async ngOnInit() {
+    await this.loadTransactions();
   }
 
-  loadTransactions() {
-    this.expenseService.getTransactions().subscribe((data: any[]) => {
-      this.transactions = data.reverse();
-      this.applyFilters();
-    });
+  async loadTransactions() {
+    const data = await this.expenseService.getTransactions();
+    this.transactions = data ?? [];
+    this.applyFilters();
   }
 
   applyFilters() {
@@ -41,10 +40,9 @@ export class Transactions implements OnInit {
     });
   }
 
-  deleteTransaction(id: number) {
-    this.expenseService.deleteTransaction(id).subscribe(() => {
-      this.loadTransactions();
-    });
+  async deleteTransaction(id: number) {
+    await this.expenseService.deleteTransaction(id);
+    await this.loadTransactions();
   }
 
   exportCSV() {

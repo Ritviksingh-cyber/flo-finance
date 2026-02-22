@@ -1,38 +1,69 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { supabase } from './supabase';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
-  private api = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
-
-  getTransactions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/transactions`);
+  async getTransactions() {
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
   }
 
-  addTransaction(tx: any): Observable<any> {
-    return this.http.post(`${this.api}/transactions`, tx);
+  async addTransaction(tx: any) {
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert([tx]);
+    if (error) throw error;
+    return data;
   }
 
-  deleteTransaction(id: number): Observable<any> {
-    return this.http.delete(`${this.api}/transactions/${id}`);
+  async deleteTransaction(id: number) {
+    const { error } = await supabase
+      .from('transactions')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
   }
 
-  getBudgets(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/budgets`);
+  async getBudgets() {
+    const { data, error } = await supabase
+      .from('budgets')
+      .select('*')
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return data;
   }
 
-  addBudget(budget: any): Observable<any> {
-    return this.http.post(`${this.api}/budgets`, budget);
+  async addBudget(budget: any) {
+    const { data, error } = await supabase
+      .from('budgets')
+      .insert([{
+        name: budget.name,
+        icon: budget.icon,
+        budget_limit: budget.limit,
+        color: budget.color
+      }]);
+    if (error) throw error;
+    return data;
   }
 
-  updateBudget(id: number, budget: any): Observable<any> {
-    return this.http.put(`${this.api}/budgets/${id}`, budget);
+  async updateBudget(id: number, budget: any) {
+    const { error } = await supabase
+      .from('budgets')
+      .update({ budget_limit: budget.limit })
+      .eq('id', id);
+    if (error) throw error;
   }
 
-  deleteBudget(id: number): Observable<any> {
-    return this.http.delete(`${this.api}/budgets/${id}`);
+  async deleteBudget(id: number) {
+    const { error } = await supabase
+      .from('budgets')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
   }
 }

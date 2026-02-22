@@ -18,11 +18,10 @@ export class Analytics implements OnInit {
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnInit() {
-    this.expenseService.getTransactions().subscribe((data: any[]) => {
-      this.transactions = data;
-      this.buildCharts();
-    });
+  async ngOnInit() {
+    const data = await this.expenseService.getTransactions();
+    this.transactions = data ?? [];
+    this.buildCharts();
   }
 
   buildCharts() {
@@ -77,7 +76,9 @@ export class Analytics implements OnInit {
       },
       options: {
         responsive: true,
-        plugins: { legend: { position: 'top', labels: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } } },
+        plugins: {
+          legend: { position: 'top', labels: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } }
+        },
         scales: {
           x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } },
           y: { grid: { color: '#e8e5e0' }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760', callback: (val: any) => '₹' + (val/1000) + 'k' } }
@@ -108,7 +109,9 @@ export class Analytics implements OnInit {
       },
       options: {
         responsive: true,
-        plugins: { legend: { labels: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } } },
+        plugins: {
+          legend: { labels: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } }
+        },
         scales: {
           x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760' } },
           y: { grid: { color: '#e8e5e0' }, ticks: { font: { family: 'DM Mono', size: 11 }, color: '#6b6760', callback: (val: any) => '₹' + (val/1000) + 'k' } }

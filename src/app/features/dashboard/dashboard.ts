@@ -27,22 +27,20 @@ export class Dashboard implements OnInit {
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnInit() {
-    this.loadTransactions();
-    this.loadBudgets();
+  async ngOnInit() {
     this.currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+    await this.loadTransactions();
+    await this.loadBudgets();
   }
 
-  loadTransactions() {
-    this.expenseService.getTransactions().subscribe((data: any[]) => {
-      this.transactions = data.reverse();
-    });
+  async loadTransactions() {
+    const data = await this.expenseService.getTransactions();
+    this.transactions = data ?? [];
   }
 
-  loadBudgets() {
-    this.expenseService.getBudgets().subscribe((data: any[]) => {
-      this.budgets = data;
-    });
+  async loadBudgets() {
+    const data = await this.expenseService.getBudgets();
+    this.budgets = (data ?? []).map((b: any) => ({ ...b, limit: b.budget_limit }));
   }
 
   get totalIncome(): number {
@@ -81,7 +79,7 @@ export class Dashboard implements OnInit {
     this.manualIncome = this.totalIncome;
   }
 
-  saveIncome() {
+  async saveIncome() {
     if (!this.manualIncome) return;
     const difference = this.manualIncome - this.totalIncome;
     if (difference === 0) { this.editingIncome = false; return; }
@@ -94,11 +92,10 @@ export class Dashboard implements OnInit {
       icon: '💰',
       note: 'Manual adjustment'
     };
-    this.expenseService.addTransaction(newEntry).subscribe(() => {
-      this.loadTransactions();
-      this.editingIncome = false;
-      this.manualIncome = null;
-    });
+    await this.expenseService.addTransaction(newEntry);
+    await this.loadTransactions();
+    this.editingIncome = false;
+    this.manualIncome = null;
   }
 
   cancelEditIncome() {
@@ -115,7 +112,7 @@ export class Dashboard implements OnInit {
     }
   }
 
-  saveEntry() {
+  async saveEntry() {
     if (!this.entryAmount || !this.entryCategory) return;
     const newEntry = {
       name: this.entryNote ? this.entryNote : this.entryCategory,
@@ -126,12 +123,11 @@ export class Dashboard implements OnInit {
       icon: this.entryType === 'income' ? '💰' : '💸',
       note: this.entryNote
     };
-    this.expenseService.addTransaction(newEntry).subscribe(() => {
-      this.loadTransactions();
-      this.entryAmount = null;
-      this.entryCategory = '';
-      this.entryNote = '';
-      this.closeModal();
-    });
+    await this.expenseService.addTransaction(newEntry);
+    await this.loadTransactions();
+    this.entryAmount = null;
+    this.entryCategory = '';
+    this.entryNote = '';
+    this.closeModal();
   }
 }
