@@ -10,15 +10,18 @@
       <a class="nav-item" routerLink="/analytics" routerLinkActive="active">↗ Analytics</a>
       <a class="nav-item" routerLink="/budgets" routerLinkActive="active">◈ Budgets</a>
       <div class="nav-label">Account</div>
-      <a class="nav-item" routerLink="/login" routerLinkActive="active">○ Login</a>
-      <a class="nav-item" routerLink="/register" routerLinkActive="active">+ Register</a>
+      <a class="nav-item" routerLink="/profile" routerLinkActive="active">○ Profile</a>
     </nav>
 
     <div class="sidebar-bottom">
-      <div class="avatar">RS</div>
+      <div class="avatar">U</div>
       <div class="user-info">
-        <div class="user-name">Ritvik Singh</div>
-        <div class="user-role">Personal</div>
+        <div class="user-name">My Account</div>
+        <div class="user-role"
+          style="cursor:pointer; color:#ff6b6b;"
+          (click)="logout()">
+          Sign out
+        </div>
       </div>
     </div>
   </aside>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.css']
 })
 export class App {
-  showSplash = true;
+  constructor(private auth: AuthService) {}
 
-  constructor() {
-    setTimeout(() => {
-      this.showSplash = true;
-    }, 1000);
+  async logout() {
+    await this.auth.logout();
   }
 }

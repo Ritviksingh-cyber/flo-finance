@@ -586,7 +586,7 @@ nav {
   color: var(--accent);
 }
 
-/* ── SPLASH SCREEN ───────────────────────── 
+ ── SPLASH SCREEN ───────────────────────── 
 .splash {
   position: fixed;
   inset: 0;
@@ -712,3 +712,207 @@ nav {
 
 .info-label { color: var(--ink-soft); }
 .info-value { color: var(--ink); font-weight: 500; }
+
+.success-msg {
+  background: var(--accent-light);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-bottom: 16px;
+}
+
+/* ── AUTH PAGE ───────────────────────────── */
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.auth-left {
+  flex: 1;
+  background: #1a1814;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-brand {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+}
+
+.auth-brand-sub {
+  font-size: 0.65rem;
+  color: #ffffff40;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.auth-hero-title {
+  font-size: 2.8rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.auth-hero-sub {
+  font-size: 0.9rem;
+  color: #ffffff60;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  max-width: 400px;
+}
+
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-feature {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.82rem;
+  color: #ffffff80;
+}
+
+.auth-feature-icon {
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  background: #ffffff10;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.auth-right {
+  width: 480px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 48px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+.auth-card-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: block;
+  text-align: center;
+}
+
+.auth-btn:hover { background: #333; transform: translateY(-1px); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.auth-btn-outline {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 12px;
+}
+
+.auth-btn-outline:hover {
+  border-color: var(--ink);
+  background: var(--bg);
+}
+
+.auth-divider {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  margin: 20px 0 0;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.65rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.error-msg {
+  background: var(--danger-light);
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-bottom: 16px;
+}
+
+.success-msg {
+  background: var(--accent-light);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-bottom: 16px;
+}

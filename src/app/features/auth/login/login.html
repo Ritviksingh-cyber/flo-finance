@@ -1,1 +1,78 @@
-<p>login works!</p>
+<div class="auth-page">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="auth-brand">flo.</div>
+    <div class="auth-brand-sub">Finance</div>
+    <div class="auth-hero-title">Take control of your money.</div>
+    <div class="auth-hero-sub">Track expenses, set budgets, and understand where your money goes — all in one place.</div>
+
+    <div class="auth-features">
+      <div class="auth-feature">
+        <span class="auth-feature-icon">📊</span>
+        <span>Real-time analytics and insights</span>
+      </div>
+      <div class="auth-feature">
+        <span class="auth-feature-icon">🎯</span>
+        <span>Smart budget tracking per category</span>
+      </div>
+      <div class="auth-feature">
+        <span class="auth-feature-icon">☁️</span>
+        <span>Cloud sync across all your devices</span>
+      </div>
+      <div class="auth-feature">
+        <span class="auth-feature-icon">🔒</span>
+        <span>Secure and private by default</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-card-logo">flo.</div>
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-subtitle">Sign in to continue to your dashboard</div>
+
+      <div class="error-msg" *ngIf="error">⚠ {{ error }}</div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input
+          class="form-input"
+          type="email"
+          [(ngModel)]="email"
+          placeholder="you@example.com"
+          (keyup.enter)="login()"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input
+          class="form-input"
+          type="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          (keyup.enter)="login()"
+        />
+      </div>
+
+      <button class="auth-btn" (click)="login()" [disabled]="loading">
+        <span *ngIf="!loading">Sign In →</span>
+        <span *ngIf="loading">Signing in...</span>
+      </button>
+
+      <div class="auth-divider">
+        <span>Don't have an account?</span>
+      </div>
+
+      <a routerLink="/register" class="auth-btn-outline">Create free account</a>
+
+      <div class="auth-footer">
+        By signing in you agree to our terms of service and privacy policy.
+      </div>
+    </div>
+  </div>
+
+</div>

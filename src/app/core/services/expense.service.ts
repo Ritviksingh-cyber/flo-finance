@@ -4,6 +4,11 @@ import { supabase } from './supabase';
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
 
+  async getUserId() {
+    const { data } = await supabase.auth.getUser();
+    return data.user?.id;
+  }
+
   async getTransactions() {
     const { data, error } = await supabase
       .from('transactions')
@@ -14,9 +19,10 @@ export class ExpenseService {
   }
 
   async addTransaction(tx: any) {
+    const user_id = await this.getUserId();
     const { data, error } = await supabase
       .from('transactions')
-      .insert([tx]);
+      .insert([{ ...tx, user_id }]);
     if (error) throw error;
     return data;
   }
@@ -39,13 +45,15 @@ export class ExpenseService {
   }
 
   async addBudget(budget: any) {
+    const user_id = await this.getUserId();
     const { data, error } = await supabase
       .from('budgets')
       .insert([{
         name: budget.name,
         icon: budget.icon,
         budget_limit: budget.limit,
-        color: budget.color
+        color: budget.color,
+        user_id
       }]);
     if (error) throw error;
     return data;

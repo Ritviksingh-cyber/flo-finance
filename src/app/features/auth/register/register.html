@@ -1,1 +1,34 @@
-<p>register works!</p>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">flo.</div>
+    <div class="auth-title">Create account</div>
+    <div class="auth-subtitle">Start tracking your finances</div>
+
+    <div class="error-msg" *ngIf="error">{{ error }}</div>
+    <div class="success-msg" *ngIf="success">{{ success }}</div>
+
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" [(ngModel)]="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" [(ngModel)]="password" placeholder="••••••••" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Confirm Password</label>
+      <input class="form-input" type="password" [(ngModel)]="confirm" placeholder="••••••••" />
+    </div>
+
+    <button class="auth-btn" (click)="register()" [disabled]="loading">
+      {{ loading ? 'Creating account...' : 'Create Account' }}
+    </button>
+
+    <div class="auth-footer">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </div>
+  </div>
+</div>
