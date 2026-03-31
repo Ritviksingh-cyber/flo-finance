@@ -19,18 +19,22 @@
 
 <div align="center">
 
-![flo demo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDd3eHZqZnVtNWJ6dGZ4dGZ4dGZ4dGZ4dGZ4/giphy.gif)
+![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![Django](https://img.shields.io/badge/Django-REST-092E20?style=for-the-badge&logo=django&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-[![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=flat-square&logo=angular)](https://angular.io)
-[![Django](https://img.shields.io/badge/Django-4.x-092E20?style=flat-square&logo=django)](https://djangoproject.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue?style=flat-square&logo=postgresql)](https://postgresql.org)
-[![Vercel](https://img.shields.io/badge/Deployed-Vercel-black?style=flat-square&logo=vercel)](https://finance-flame-sigma.vercel.app)
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDd4bXVvaTlxZnVvY2k2ZmZ6dXhiY2ozemp2eTVvcGwwNHllMnBsZiZlcD12MV9pbnRlcm5hbGdfZ2lmX2J5X2lkJmN0PWc/du3J3cXyzhj75IOgvA/rs,w_600.gif" width="500" alt="finance gif"/>
 
-**A modern, minimal personal finance dashboard.**
-
-[Live Demo](https://finance-flame-sigma.vercel.app/dashboard) · [Report Bug](https://github.com/Ritviksingh-cyber/flo-finance/issues) · [Request Feature](https://github.com/Ritviksingh-cyber/flo-finance/issues)
+**[🚀 Live Demo](https://finance-flame-sigma.vercel.app/dashboard)**
 
 </div>
+
+---
+
+## What is flo.?
+
+A clean, minimal personal finance manager that helps you track income, expenses and budgets — all in one place. Built as a full-stack project with Angular on the frontend and Django REST Framework on the backend.
 
 ---
 
