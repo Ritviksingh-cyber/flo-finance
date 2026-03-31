@@ -17,7 +17,7 @@
   <div class="card income">
     <div class="card-label">Total Income</div>
     <div *ngIf="!editingIncome">
-      <div class="card-amount">₹{{ totalIncome | number }}</div>
+      <div class="card-amount">₹{{ totalIncome | number}}</div>
       <div class="card-change">
         <span class="up">↑ 8.2%</span> vs last month
         <button class="edit-income-btn" (click)="startEditIncome()">✎ Edit</button>

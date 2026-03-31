@@ -22,23 +22,23 @@ export class Register {
   constructor(private auth: AuthService, private router: Router) {}
 
   async register() {
-    if (!this.email || !this.password || !this.confirm) {
-      this.error = 'Please fill in all fields.';
-      return;
-    }
-    if (this.password !== this.confirm) {
-      this.error = 'Passwords do not match.';
-      return;
-    }
-    this.loading = true;
-    this.error = '';
-    try {
-      await this.auth.register(this.email, this.password);
-      this.success = 'Account created! Please check your email to confirm.';
-    } catch (err: any) {
-      this.error = err.message || 'Registration failed.';
-    } finally {
-      this.loading = false;
-    }
+  if (!this.email || !this.password || !this.confirm) {
+    this.error = 'Please fill in all fields.';
+    return;
   }
+  if (this.password !== this.confirm) {
+    this.error = 'Passwords do not match.';
+    return;
+  }
+  this.loading = true;
+  this.error = '';
+  try {
+    await this.auth.register(this.email, this.password);
+    // router.navigate is handled inside auth.service now
+  } catch (err: any) {
+    this.error = err.message || 'Registration failed.';
+  } finally {
+    this.loading = false;
+  }
+}
 }

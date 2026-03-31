@@ -1,85 +1,73 @@
 import { Injectable } from '@angular/core';
-import { supabase } from './supabase';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+
+const API = 'http://localhost:8000/api';
 
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
 
-  async getUserId(): Promise<string | null> {
-    const { data } = await supabase.auth.getUser();
-    return data?.user?.id ?? null;
-  }
+  constructor(private http: HttpClient) {}
 
-  async getTransactions() {
-    const user_id = await this.getUserId();
-    if (!user_id) return [];
-    const { data, error } = await supabase
-      .from('transactions')
-      .select('*')
-      .eq('user_id', user_id)
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    return data ?? [];
+  async getTransactions(): Promise<any[]> {
+    try {
+      const data = await firstValueFrom(this.http.get<any[]>(`${API}/transactions/`));
+      return data ?? [];
+    } catch {
+      return [];
+    }
   }
 
   async addTransaction(tx: any) {
-    const user_id = await this.getUserId();
-    if (!user_id) return;
-    const { data, error } = await supabase
-      .from('transactions')
-      .insert([{ ...tx, user_id }]);
-    if (error) throw error;
-    return data;
+    return await firstValueFrom(
+      this.http.post(`${API}/transactions/`, {
+        title: tx.name,
+        amount: tx.amount,
+        type: tx.type,
+        category: tx.category,
+        date: tx.date
+      })
+    );
   }
 
   async deleteTransaction(id: number) {
-    const { error } = await supabase
-      .from('transactions')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
+    return await firstValueFrom(
+      this.http.delete(`${API}/transactions/${id}/`)
+    );
   }
 
-  async getBudgets() {
-    const user_id = await this.getUserId();
-    if (!user_id) return [];
-    const { data, error } = await supabase
-      .from('budgets')
-      .select('*')
-      .eq('user_id', user_id)
-      .order('created_at', { ascending: true });
-    if (error) throw error;
-    return data ?? [];
+  async getBudgets(): Promise<any[]> {
+    try {
+      const data = await firstValueFrom(this.http.get<any[]>(`${API}/budgets/`));
+      return data ?? [];
+    } catch {
+      return [];
+    }
   }
 
   async addBudget(budget: any) {
-    const user_id = await this.getUserId();
-    if (!user_id) return;
-    const { data, error } = await supabase
-      .from('budgets')
-      .insert([{
-        name: budget.name,
-        icon: budget.icon,
-        budget_limit: budget.limit,
-        color: budget.color,
-        user_id
-      }]);
-    if (error) throw error;
-    return data;
+    return await firstValueFrom(
+      this.http.post(`${API}/budgets/`, {
+        category: budget.name,
+        limit: budget.limit,
+        month: new Date().toISOString().split('T')[0]
+      })
+    );
   }
 
   async updateBudget(id: number, budget: any) {
-    const { error } = await supabase
-      .from('budgets')
-      .update({ budget_limit: budget.limit })
-      .eq('id', id);
-    if (error) throw error;
+    return await firstValueFrom(
+      this.http.patch(`${API}/budgets/${id}/`, { limit: budget.limit })
+    );
   }
 
   async deleteBudget(id: number) {
-    const { error } = await supabase
-      .from('budgets')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
+    return await firstValueFrom(
+      this.http.delete(`${API}/budgets/${id}/`)
+    );
+  }
+
+  async getAnalytics() {
+    return await firstValueFrom(this.http.get(`${API}/analytics/`));
   }
 }

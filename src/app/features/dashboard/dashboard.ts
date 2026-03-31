@@ -12,16 +12,19 @@ import { ExpenseService } from '../../core/services/expense.service';
 })
 export class Dashboard implements OnInit {
 
+  // ── MODAL ──────────────────────────────────
   modalOpen = false;
   entryType: 'income' | 'expense' = 'income';
   entryAmount: number | null = null;
   entryCategory = '';
   entryNote = '';
 
+  // ── DATA ───────────────────────────────────
   transactions: any[] = [];
   budgets: any[] = [];
   currentMonth: string = '';
 
+  // ── EDIT INCOME ────────────────────────────
   editingIncome = false;
   manualIncome: number | null = null;
 
@@ -33,26 +36,27 @@ export class Dashboard implements OnInit {
     await this.loadBudgets();
   }
 
+  // ── LOAD DATA ──────────────────────────────
   async loadTransactions() {
-    const data = await this.expenseService.getTransactions();
-    this.transactions = data ?? [];
+    this.transactions = await this.expenseService.getTransactions();
   }
 
   async loadBudgets() {
     const data = await this.expenseService.getBudgets();
-    this.budgets = (data ?? []).map((b: any) => ({ ...b, limit: b.budget_limit }));
+    this.budgets = data.map((b: any) => ({ ...b, limit: b.limit }));
   }
 
+  // ── COMPUTED TOTALS ────────────────────────
   get totalIncome(): number {
     return this.transactions
       .filter(t => t.type === 'income')
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + Number(t.amount), 0);
   }
 
   get totalExpense(): number {
     return this.transactions
       .filter(t => t.type === 'expense')
-      .reduce((sum, t) => sum + t.amount, 0);
+      .reduce((sum, t) => sum + Number(t.amount), 0);
   }
 
   get balance(): number {
@@ -62,18 +66,20 @@ export class Dashboard implements OnInit {
   get biggestSpend(): any {
     const expenses = this.transactions.filter(t => t.type === 'expense');
     if (expenses.length === 0) return null;
-    return expenses.reduce((max, t) => t.amount > max.amount ? t : max, expenses[0]);
+    return expenses.reduce((max, t) => Number(t.amount) > Number(max.amount) ? t : max, expenses[0]);
   }
 
+  // ── BUDGETS WITH LIVE SPENT ────────────────
   get budgetsWithSpent(): any[] {
     return this.budgets.map(b => {
       const spent = this.transactions
-        .filter(t => t.type === 'expense' && t.category === b.name)
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.type === 'expense' && t.category === b.category)
+        .reduce((sum, t) => sum + Number(t.amount), 0);
       return { ...b, spent };
     });
   }
 
+  // ── EDIT INCOME ────────────────────────────
   startEditIncome() {
     this.editingIncome = true;
     this.manualIncome = this.totalIncome;
@@ -83,16 +89,14 @@ export class Dashboard implements OnInit {
     if (!this.manualIncome) return;
     const difference = this.manualIncome - this.totalIncome;
     if (difference === 0) { this.editingIncome = false; return; }
-    const newEntry = {
+    await this.expenseService.addTransaction({
       name: 'Manual Income Adjustment',
       amount: Math.abs(difference),
       type: difference > 0 ? 'income' : 'expense',
       category: 'Salary',
       date: new Date().toISOString().split('T')[0],
-      icon: '💰',
       note: 'Manual adjustment'
-    };
-    await this.expenseService.addTransaction(newEntry);
+    });
     await this.loadTransactions();
     this.editingIncome = false;
     this.manualIncome = null;
@@ -103,6 +107,7 @@ export class Dashboard implements OnInit {
     this.manualIncome = null;
   }
 
+  // ── MODAL CONTROLS ─────────────────────────
   openModal() { this.modalOpen = true; }
   closeModal() { this.modalOpen = false; }
 
@@ -112,18 +117,17 @@ export class Dashboard implements OnInit {
     }
   }
 
+  // ── SAVE ENTRY ─────────────────────────────
   async saveEntry() {
     if (!this.entryAmount || !this.entryCategory) return;
-    const newEntry = {
-      name: this.entryNote ? this.entryNote : this.entryCategory,
+    await this.expenseService.addTransaction({
+      name: this.entryNote || this.entryCategory,
       amount: this.entryAmount,
       type: this.entryType,
       category: this.entryCategory,
       date: new Date().toISOString().split('T')[0],
-      icon: this.entryType === 'income' ? '💰' : '💸',
       note: this.entryNote
-    };
-    await this.expenseService.addTransaction(newEntry);
+    });
     await this.loadTransactions();
     this.entryAmount = null;
     this.entryCategory = '';
