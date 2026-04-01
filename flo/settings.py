@@ -4,7 +4,6 @@ Django settings for flo project.
 
 from pathlib import Path
 from dotenv import load_dotenv
-import os
 import dj_database_url
 
 # Load environment variables
@@ -154,7 +153,11 @@ USE_TZ = True
 # STATIC FILES
 # ======================
 
-STATIC_URL = "static/"
+import os
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # ======================
 # DEFAULT PK
