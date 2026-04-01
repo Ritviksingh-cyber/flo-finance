@@ -1,6 +1,58 @@
-venv/
+# =====================
+# Python / Django
+# =====================
 __pycache__/
 *.pyc
-db.sqlite3
+*.pyo
+*.pyd
 .env
+venv/
+.venv/
+db.sqlite3
 *.log
+staticfiles/
+
+# =====================
+# Node / Angular
+# =====================
+node_modules/
+dist/
+.angular/
+npm-debug.log
+yarn-error.log
+
+# =====================
+# Build / Temp
+# =====================
+/dist
+/tmp
+/out-tsc
+/bazel-out
+coverage/
+
+# =====================
+# IDE / Editor
+# =====================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+.project
+.classpath
+.settings/
+
+# =====================
+# Misc
+# =====================
+.DS_Store
+Thumbs.db
+.vercel
+.history/
+.sass-cache/
+.connect.lock
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/

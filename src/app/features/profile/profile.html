@@ -1,0 +1,140 @@
+<!-- TOP BAR -->
+<div class="topbar">
+    <div>
+      <div class="page-title">Profile</div>
+      <div class="page-subtitle">Manage your account and preferences</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-primary" (click)="startEdit()">✎ Edit Profile</button>
+    </div>
+  </div>
+  
+  <!-- PROFILE GRID -->
+  <div class="profile-grid">
+  
+    <!-- LEFT: USER CARD -->
+    <div class="panel profile-card">
+      <div class="profile-avatar">{{ user.name.charAt(0) }}</div>
+      <div class="profile-name">{{ user.name }}</div>
+      <div class="profile-email">{{ user.email }}</div>
+      <div class="profile-badge">Personal Account</div>
+  
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-value">{{ totalTransactions }}</div>
+          <div class="profile-stat-label">Transactions</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value">{{ budgets.length }}</div>
+          <div class="profile-stat-label">Budgets</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value">{{ topCategory }}</div>
+          <div class="profile-stat-label">Top Spend</div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- RIGHT: DETAILS -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+  
+      <!-- ACCOUNT INFO -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Account Info</div>
+        </div>
+  
+        <div *ngIf="!editingUser">
+          <div class="info-row">
+            <span class="info-label">Full Name</span>
+            <span class="info-value">{{ user.name }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ user.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Phone</span>
+            <span class="info-value">{{ user.phone }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Currency</span>
+            <span class="info-value">{{ user.currency }} — Indian Rupee</span>
+          </div>
+        </div>
+  
+        <div *ngIf="editingUser">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" [(ngModel)]="editUser.name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" [(ngModel)]="editUser.email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input class="form-input" type="text" [(ngModel)]="editUser.phone" />
+          </div>
+          <div class="modal-footer" style="margin-top: 8px; padding-top: 16px;">
+            <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            <button class="btn-submit" (click)="saveEdit()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- FINANCIAL SUMMARY -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Financial Summary</div>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total Income</span>
+          <span class="info-value up">₹{{ totalIncome | number }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total Expenses</span>
+          <span class="info-value down">₹{{ totalExpense | number }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Net Balance</span>
+          <span class="info-value">₹{{ balance | number }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Top Category</span>
+          <span class="info-value">{{ topCategory }}</span>
+        </div>
+  
+        <!-- Savings Goal Progress -->
+        <div style="margin-top: 20px;">
+          <div class="budget-header">
+            <span class="budget-name">🎯 Savings Goal</span>
+            <span class="budget-vals">₹{{ balance | number }} / ₹{{ user.savingsGoal | number }}</span>
+          </div>
+          <div class="progress-track" style="height: 8px; margin-top: 8px;">
+            <div class="progress-fill"
+              [style.width.%]="savingsPercent"
+              style="background: linear-gradient(90deg, #2d5a3d, #4a8a5d)">
+            </div>
+          </div>
+          <div class="savings-note">{{ savingsPercent.toFixed(0) }}% of goal reached</div>
+        </div>
+      </div>
+  
+      <!-- PREFERENCES -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Preferences</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monthly Budget Limit (₹)</label>
+          <input class="form-input" type="number" [(ngModel)]="user.monthlyBudget" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Savings Goal (₹)</label>
+          <input class="form-input" type="number" [(ngModel)]="user.savingsGoal" />
+        </div>
+      </div>
+  
+    </div>
+  </div>

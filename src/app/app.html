@@ -1,0 +1,38 @@
+<!-- SIDEBAR LAYOUT -->
+<div class="wrapper" *ngIf="showSidebar">
+  <aside class="sidebar">
+    <div class="logo">flo.</div>
+    <div class="logo-sub">Finance</div>
+
+    <nav>
+      <div class="nav-label">Menu</div>
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active">⊞ Dashboard</a>
+      <a class="nav-item" routerLink="/transactions" routerLinkActive="active">$ Transactions</a>
+      <a class="nav-item" routerLink="/analytics" routerLinkActive="active">↗ Analytics</a>
+      <a class="nav-item" routerLink="/budgets" routerLinkActive="active">◈ Budgets</a>
+      <div class="nav-label">Account</div>
+      <a class="nav-item" routerLink="/profile" routerLinkActive="active">○ Profile</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="avatar">U</div>
+      <div class="user-info">
+        <div class="user-name">My Account</div>
+        <div class="user-role"
+          style="cursor:pointer; color:#ff6b6b;"
+          (click)="logout()">
+          Sign out
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- AUTH LAYOUT (no sidebar) -->
+<div *ngIf="!showSidebar">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,108 @@
+<!-- TOP BAR -->
+<div class="topbar">
+    <div>
+      <div class="page-title">Budgets</div>
+      <div class="page-subtitle">Set and track your spending limits</div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-primary" (click)="openModal()">+ New Budget</button>
+    </div>
+  </div>
+  
+  <!-- BUDGET CARDS -->
+  <div class="budget-grid">
+    <div class="budget-card" *ngFor="let b of budgets"
+      [class.over]="getStatus(b.spent, b.limit) === 'over'"
+      [class.warning]="getStatus(b.spent, b.limit) === 'warning'">
+  
+      <!-- Card Header -->
+      <div class="budget-card-header">
+        <div class="budget-card-icon">{{ b.icon }}</div>
+        <div class="budget-card-info">
+          <div class="budget-card-name">{{ b.name }}</div>
+          <div class="budget-card-status"
+            [style.color]="getStatus(b.spent, b.limit) === 'over' ? '#8b2e2e' :
+                           getStatus(b.spent, b.limit) === 'warning' ? '#c47a1a' : '#2d5a3d'">
+            {{ getStatus(b.spent, b.limit) === 'over' ? '⚠ Over budget' :
+               getStatus(b.spent, b.limit) === 'warning' ? '⚠ Near limit' : '✓ On track' }}
+          </div>
+        </div>
+        <div class="budget-card-actions">
+          <button class="icon-btn" (click)="startEdit(b)">✎</button>
+          <button class="icon-btn danger" (click)="deleteBudget(b.id)">✕</button>
+        </div>
+      </div>
+  
+      <!-- Progress Bar -->
+      <div class="progress-track" style="height: 8px; margin: 16px 0 10px;">
+        <div class="progress-fill"
+          [style.width.%]="getPercent(b.spent, b.limit)"
+          [style.background]="getStatus(b.spent, b.limit) === 'over' ? '#8b2e2e' :
+                              getStatus(b.spent, b.limit) === 'warning' ? '#c47a1a' : b.color">
+        </div>
+      </div>
+  
+      <!-- Amounts -->
+      <div class="budget-card-amounts">
+        <span class="spent-amount">₹{{ b.spent | number }} spent</span>
+        <span class="limit-amount">of ₹{{ b.limit | number }}</span>
+      </div>
+  
+      <!-- Edit Mode -->
+      <div class="edit-row" *ngIf="editingId === b.id">
+        <label class="form-label" style="margin-top: 16px;">New Limit (₹)</label>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <input class="form-input" type="number" [(ngModel)]="editLimit" />
+          <button class="btn btn-primary" style="padding: 8px 14px;" (click)="saveEdit(b)">Save</button>
+          <button class="btn-cancel" style="padding: 8px 14px;" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <!-- ADD BUDGET MODAL -->
+  <div class="modal-overlay" [class.open]="modalOpen" (click)="onOverlayClick($event)">
+    <div class="modal">
+      <div class="modal-title">New Budget</div>
+  
+      <div class="form-group">
+        <label class="form-label">Icon</label>
+        <div class="icon-picker">
+          <span *ngFor="let icon of icons"
+            class="icon-option"
+            [class.selected]="newBudget.icon === icon"
+            (click)="newBudget.icon = icon">
+            {{ icon }}
+          </span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label class="form-label">Category Name</label>
+        <input class="form-input" type="text" [(ngModel)]="newBudget.name" placeholder="e.g. Food" />
+      </div>
+  
+      <div class="form-group">
+        <label class="form-label">Monthly Limit (₹)</label>
+        <input class="form-input" type="number" [(ngModel)]="newBudget.limit" placeholder="0" />
+      </div>
+  
+      <div class="form-group">
+        <label class="form-label">Color</label>
+        <div class="color-picker">
+          <span *ngFor="let color of colors"
+            class="color-option"
+            [style.background]="color"
+            [class.selected]="newBudget.color === color"
+            (click)="newBudget.color = color">
+          </span>
+        </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+        <button class="btn-submit" (click)="saveBudget()">Save Budget</button>
+      </div>
+    </div>
+  </div>
