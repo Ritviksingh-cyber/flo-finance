@@ -10,6 +10,7 @@ import dj_database_url
 load_dotenv()
 
 # Base directory
+from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ======================
