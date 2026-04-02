@@ -106,6 +106,15 @@ flo-finance/
 
 ---
 
+## Deployment
+ 
+| Service | Platform | Notes |
+|---|---|---|
+| Frontend | Vercel | Auto-deploys from `main` branch |
+| Backend | Render | Root Directory must be set to `flo-backend` |
+| Database | Render PostgreSQL | Connected via `DATABASE_URL` env var |
+ 
+
 ## Getting Started
 
 ### Prerequisites
